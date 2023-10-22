@@ -341,6 +341,17 @@ parlay::sequence<parlay::sequence<indexType>> searchAll(PointRange &Query_Points
     QueryStats.increment_visited(i, visitedElts.size());
     QueryStats.increment_dist(i, dist_cmps);
   });
+  /*for (int i = 0; i < Query_Points.size(); i++) {
+    parlay::sequence<indexType> neighbors = parlay::sequence<indexType>(QP.k);
+    auto [pairElts, dist_cmps] = beam_search(Query_Points[i], G, Base_Points, starting_points, QP);
+    auto [beamElts, visitedElts] = pairElts;
+    for (indexType j = 0; j < QP.k; j++) {
+      neighbors[j] = beamElts[j].first;
+    }
+    all_neighbors[i] = neighbors;
+    QueryStats.increment_visited(i, visitedElts.size());
+    QueryStats.increment_dist(i, dist_cmps);
+  }*/
 
   return all_neighbors;
 }

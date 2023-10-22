@@ -21,6 +21,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include <algorithm>
+#include <time.h>
 
 #include "../utils/NSGDist.h"
 #include "../utils/beamSearch.h"
@@ -62,6 +63,7 @@ void ANN(Graph<indexType> &G, long k, BuildParams &BP,
             << std::endl;
   Graph_ G_(name, params, G.size(), avg_deg, max_deg, idx_time);
   G_.print();
+
   if(Query_Points.size() != 0) search_and_parse<Point, PointRange, indexType>(G_, G, Points, Query_Points, GT, res_file, k, false, start_point);
 }
 
