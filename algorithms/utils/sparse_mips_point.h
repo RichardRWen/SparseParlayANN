@@ -82,7 +82,10 @@ float sparse_mips_distance(const unsigned int *ind1, const float *val1, unsigned
 	int i = 0, j = 0;
 	while (true) {
 		if (ind1[i] == ind2[j]) {
-			result += val1[i++] * val2[j++];
+            result++;
+            i++;
+            j++;
+			//result += val1[i++] * val2[j++];
 			if (i >= (int)len1 || j >= (int)len2) break;
 		}
 		else if (ind1[i] < ind2[j]) {

@@ -31,6 +31,8 @@
 #include "types.h"
 #include "stats.h"
 
+#define OVERRETRIEVAL 2
+
 template<typename Point, typename PointRange, typename indexType>
 nn_result checkRecall(
         Graph<indexType> &G,
@@ -59,7 +61,12 @@ nn_result checkRecall(
     all_ngh = beamSearchRandom<Point, PointRange, indexType>(Query_Points, G, Base_Points, QueryStats, QP);
     query_time = t.next_time();
   }else{
-    all_ngh = searchAll<Point, PointRange, indexType>(Query_Points, G, Base_Points, QueryStats, start_point, QP);
+    /*search_record<Point, PointRange, indexType>(Query_Points, G, Base_Points, QueryStats, start_point, QP);
+    t.next_time();
+    auto stats_ = {QueryStats.dist_stats(), QueryStats.visited_stats()};
+    parlay::sequence<indexType> stats = parlay::flatten(stats_);
+    return nn_result(0.0, stats, 0.0, k, QP.beamSize, QP.cut, Query_Points.size(), QP.limit, QP.degree_limit, k);*/
+    //all_ngh = searchAll<Point, PointRange, indexType>(Query_Points, G, Base_Points, QueryStats, start_point, QP);
     t.next_time();
     QueryStats.clear();
     all_ngh = searchAll<Point, PointRange, indexType>(Query_Points, G, Base_Points, QueryStats, start_point, QP);
@@ -74,7 +81,8 @@ nn_result checkRecall(
     int numCorrect = 0;
     for (indexType i = 0; i < n; i++) {
       std::set<indexType> reported_nbhs;
-      for (indexType l = 0; l < k; l++) reported_nbhs.insert((all_ngh[i])[l]);
+      //for (indexType l = 0; l < OVERRETRIEVAL * k; l++) reported_nbhs.insert((all_ngh[i])[l]);
+      for (indexType l = 0; l < all_ngh[i].size(); l++) reported_nbhs.insert((all_ngh[i])[l]);
       for (indexType l = 0; l < k; l++) {
         if (reported_nbhs.find((GT.coordinates(i,l))) !=
             reported_nbhs.end()) {
