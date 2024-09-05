@@ -101,7 +101,7 @@ struct SparseMipsPoint {
 
 	static bool is_metric() {return false;}
 
-	float distance(SparseMipsPoint<T> x) {
+	float distance(const SparseMipsPoint<T>& x) const {
 		return sparse_mips_distance(this->indices, this->values, this->len, x.indices, x.values, x.len);
 	}
 
@@ -114,12 +114,12 @@ struct SparseMipsPoint {
 			__builtin_prefetch((char*)values + i * 64);
 	}
 
-	long id() {return id_;}
+	long id() const {return id_;}
 
 	SparseMipsPoint(const unsigned int *indices, const T* values, size_t len, unsigned int dims, long id)
 		: indices(indices), values(values), len(len), dims(dims), id_(id) {}
 
-	bool operator==(SparseMipsPoint<T> q){
+	bool operator==(const SparseMipsPoint<T>& q) const {
 		for (int i = 0; i < len; i++) {
 			if (indices[i] != q.indices[i] || values[i] != q.values[i]) {
 				return false;
@@ -146,6 +146,10 @@ struct SparseMipsPoint {
 		while (j < q.len) if (q.values[j] != 0) return false;
 		return true;
 	}*/
+
+    bool same_as(const SparseMipsPoint<T>& q) const {
+        return (*this) == q;
+    }
 
 	std::string to_string() {
 		std::string s = "";

@@ -42,8 +42,9 @@
 #include <unistd.h>
 
 
-template<typename T, class SparsePoint>
+template<typename T, class Point_>
 struct SparsePointRange{
+    using Point = Point_;
 
 	long dimension(){return dims;}
 	//long aligned_dimension(){return aligned_dims;}
@@ -86,8 +87,8 @@ struct SparsePointRange{
 
 	size_t size() { return n; }
 
-	SparsePoint operator [] (long i) {
-		return SparsePoint(&indices[indptrs[i]], &values[indptrs[i]], indptrs[i + 1] - indptrs[i], dims, i);
+	Point_ operator [] (long i) {
+		return Point_(&indices[indptrs[i]], &values[indptrs[i]], indptrs[i + 1] - indptrs[i], dims, i);
 	}
 
 	//private:
